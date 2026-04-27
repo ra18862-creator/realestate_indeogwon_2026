@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>서영 아파트 매수 검토 리포트 2026.04</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --navy: #1a2b4e;
+    --navy-light: #243660;
+    --gold: #c9a84c;
+    --rank1: #27ae60;
+    --rank2: #2980b9;
+    --rank3: #e67e22;
+    --rank4: #e74c3c;
+    --bg: #f0f2f5;
+    --card: #ffffff;
+    --text: #2c3e50;
+    --muted: #7f8c8d;
+    --border: #e0e4ea;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.6; }
+
+  /* ── 헤더 ── */
+  .site-header {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+    color: #fff; padding: 32px 24px 24px;
+  }
+  .site-header h1 { font-size: 22px; font-weight: 700; letter-spacing: -0.5px; }
+  .site-header .subtitle { color: #aab4cc; margin-top: 4px; font-size: 13px; }
+  .meta-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .pill { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 20px; padding: 4px 12px; font-size: 12px; color: #dce4f0; }
+  .pill b { color: #fff; }
+
+  /* ── 네비 탭 ── */
+  .nav-tabs { background: var(--navy); display: flex; overflow-x: auto; gap: 0;
+    position: sticky; top: 0; z-index: 100; border-top: 1px solid rgba(255,255,255,0.1); }
+  .nav-tabs button { background: none; border: none; color: #aab4cc; padding: 12px 18px;
+    cursor: pointer; font-size: 13px; white-space: nowrap; border-bottom: 3px solid transparent;
+    transition: all 0.2s; }
+  .nav-tabs button:hover { color: #fff; }
+  .nav-tabs button.active { color: var(--gold); border-bottom-color: var(--gold); font-weight: 600; }
+
+  /* ── 섹션 컨테이너 ── */
+  .section { display: none; padding: 20px; max-width: 1080px; margin: 0 auto; }
+  .section.active { display: block; }
+
+  /* ── 섹션 타이틀 ── */
+  .sec-title { font-size: 18px; font-weight: 700; color: var(--navy); margin-bottom: 16px;
+    padding-bottom: 8px; border-bottom: 2px solid var(--navy); }
+  .sec-desc { color: var(--muted); font-size: 13px; margin-bottom: 20px; line-height: 1.7; }
+
+  /* ── 카드 ── */
+  .card { background: var(--card); border-radius: 12px; padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07); margin-bottom: 16px; }
+  .card-title { font-size: 15px; font-weight: 700; margin-bottom: 12px; }
+
+  /* ── 순위 그리드 ── */
+  .rank-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
+  .rank-card { border-radius: 12px; padding: 18px; color: #fff; position: relative; overflow: hidden; }
+  .rank-card::before { content: ''; position: absolute; top: -20px; right: -20px;
+    width: 80px; height: 80px; border-radius: 50%; background: rgba(255,255,255,0.1); }
+  .rank-card .rank-num { font-size: 11px; font-weight: 700; letter-spacing: 1px;
+    text-transform: uppercase; opacity: 0.85; }
+  .rank-card .rank-label { font-size: 18px; font-weight: 800; margin: 6px 0 2px; }
+  .rank-card .rank-names { font-size: 13px; opacity: 0.9; line-height: 1.5; }
+  .rank-card .rank-desc { font-size: 12px; opacity: 0.75; margin-top: 8px; line-height: 1.5; }
+  .r1 { background: linear-gradient(135deg, #27ae60, #1e8449); }
+  .r2 { background: linear-gradient(135deg, #2980b9, #1a5276); }
+  .r3 { background: linear-gradient(135deg, #e67e22, #b7600e); }
+  .r4 { background: linear-gradient(135deg, #e74c3c, #b03a2e); }
+
+  /* ── 요약 KPI ── */
+  .kpi-row { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; }
+  .kpi { background: var(--card); border-radius: 10px; padding: 14px 18px;
+    flex: 1; min-width: 140px; box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    border-left: 4px solid var(--navy); }
+  .kpi .kpi-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+  .kpi .kpi-value { font-size: 20px; font-weight: 800; color: var(--navy); margin-top: 4px; }
+  .kpi .kpi-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+  /* ── 월상환 테이블 ── */
+  table { width: 100%; border-collapse: collapse; }
+  th { background: var(--navy); color: #fff; padding: 10px 12px; font-size: 13px; text-align: center; }
+  td { padding: 9px 12px; text-align: center; border-bottom: 1px solid var(--border); font-size: 13px; }
+  tr:nth-child(even) td { background: #f7f9fc; }
+  tr:hover td { background: #eef2fa; }
+  .highlight-row td { background: #fff8e1 !important; font-weight: 700; color: #b7600e; }
+
+  /* ── 단지 비교 ── */
+  .complex-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+  .complex-card { background: var(--card); border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    overflow: hidden; transition: transform 0.2s, box-shadow 0.2s; }
+  .complex-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.12); }
+  .complex-header { padding: 16px 18px 12px; position: relative; }
+  .complex-header h3 { font-size: 16px; font-weight: 800; color: var(--navy); }
+  .complex-header .location { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .rank-badge { position: absolute; top: 14px; right: 14px; width: 28px; height: 28px;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 800; color: #fff; }
+  .complex-body { padding: 0 18px 18px; }
+  .spec-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+  .spec-tag { background: #f0f4ff; color: var(--navy); border-radius: 6px;
+    padding: 3px 9px; font-size: 11px; font-weight: 600; }
+  .price-range { font-size: 22px; font-weight: 800; color: var(--navy); margin: 8px 0 4px; }
+  .price-range span { font-size: 13px; font-weight: 400; color: var(--muted); }
+  .monthly { font-size: 13px; color: #e67e22; font-weight: 700; margin-bottom: 10px; }
+  .pros-cons { display: flex; gap: 8px; }
+  .pros, .cons { flex: 1; }
+  .pros h5 { color: var(--rank1); font-size: 11px; margin-bottom: 4px; }
+  .cons h5 { color: var(--rank4); font-size: 11px; margin-bottom: 4px; }
+  .pros li, .cons li { font-size: 11px; color: var(--muted); list-style: none;
+    padding-left: 12px; position: relative; line-height: 1.6; }
+  .pros li::before { content: '✓'; color: var(--rank1); position: absolute; left: 0; }
+  .cons li::before { content: '✗'; color: var(--rank4); position: absolute; left: 0; }
+  .verdict-box { background: #f7f9fc; border-left: 3px solid var(--gold); border-radius: 0 8px 8px 0;
+    padding: 8px 12px; margin-top: 12px; font-size: 12px; color: var(--text); line-height: 1.6; }
+  .toggle-btn { background: none; border: 1px solid var(--border); border-radius: 6px;
+    padding: 5px 12px; font-size: 11px; color: var(--navy); cursor: pointer; margin-top: 10px;
+    width: 100%; transition: background 0.2s; }
+  .toggle-btn:hover { background: #f0f4ff; }
+  .detail-content { display: none; margin-top: 12px; }
+  .detail-content.open { display: block; }
+
+  /* ── 계산기 ── */
+  .calc-wrap { background: var(--card); border-radius: 12px; padding: 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
+  .calc-row { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; margin-bottom: 20px; }
+  .calc-row label { font-size: 13px; font-weight: 600; color: var(--navy); }
+  .range-wrap { flex: 1; min-width: 200px; }
+  input[type=range] { width: 100%; accent-color: var(--navy); }
+  .calc-result { background: linear-gradient(135deg, var(--navy), var(--navy-light));
+    color: #fff; border-radius: 10px; padding: 20px; display: flex; flex-wrap: wrap; gap: 16px; }
+  .calc-item { flex: 1; min-width: 120px; }
+  .calc-item .c-label { font-size: 11px; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.5px; }
+  .calc-item .c-value { font-size: 22px; font-weight: 800; margin-top: 4px; }
+  .calc-item .c-sub { font-size: 11px; opacity: 0.65; margin-top: 2px; }
+  .danger { color: #e74c3c !important; }
+  .warn { color: #f39c12 !important; }
+  .safe { color: #2ecc71 !important; }
+
+  /* ── 비교 테이블 ── */
+  .compare-table-wrap { overflow-x: auto; }
+  .compare-table { min-width: 700px; }
+  .compare-table td.name { font-weight: 700; text-align: left; }
+  .compare-table td.rank { font-weight: 800; }
+  .compare-table td.r1c { color: var(--rank1); }
+  .compare-table td.r2c { color: var(--rank2); }
+  .compare-table td.r3c { color: var(--rank3); }
+  .compare-table td.r4c { color: var(--rank4); }
+
+  /* ── 학군/교통 ── */
+  .zone-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+  .zone-card { background: var(--card); border-radius: 10px; padding: 16px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
+  .zone-card h4 { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+  .zone-card .zone-badge { display: inline-block; background: var(--navy); color: #fff;
+    font-size: 10px; padding: 2px 8px; border-radius: 10px; margin-bottom: 8px; }
+  .zone-card p { font-size: 12px; color: var(--muted); line-height: 1.7; }
+  .traffic-item { display: flex; gap: 12px; align-items: flex-start;
+    padding: 12px; background: var(--card); border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06); margin-bottom: 10px; }
+  .traffic-icon { width: 36px; height: 36px; border-radius: 8px; background: var(--navy);
+    color: #fff; display: flex; align-items: center; justify-content: center; font-size: 16px;
+    flex-shrink: 0; }
+  .traffic-text h5 { font-size: 13px; font-weight: 700; color: var(--navy); }
+  .traffic-text p { font-size: 12px; color: var(--muted); margin-top: 2px; line-height: 1.5; }
+
+  /* ── 최종판단 ── */
+  .final-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
+  .final-card { border-radius: 12px; padding: 18px; }
+  .final-safe { background: #eafaf1; border: 2px solid #27ae60; }
+  .final-balance { background: #eaf4fb; border: 2px solid #2980b9; }
+  .final-stretch { background: #fef9e7; border: 2px solid #f39c12; }
+  .final-risk { background: #fdedec; border: 2px solid #e74c3c; }
+  .final-card h4 { font-size: 14px; font-weight: 800; margin-bottom: 6px; }
+  .final-safe h4 { color: #1e8449; }
+  .final-balance h4 { color: #1a5276; }
+  .final-stretch h4 { color: #b7600e; }
+  .final-risk h4 { color: #b03a2e; }
+  .final-card .final-names { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+  .final-card .final-range { font-size: 12px; color: var(--muted); }
+
+  /* ── 내가 서영이라면 ── */
+  .priority-list { counter-reset: priority; }
+  .priority-item { display: flex; gap: 16px; background: var(--card); border-radius: 12px;
+    padding: 16px 18px; margin-bottom: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    border-left: 4px solid var(--navy); align-items: flex-start; }
+  .p-num { width: 28px; height: 28px; border-radius: 50%; background: var(--navy);
+    color: #fff; font-size: 14px; font-weight: 800; display: flex; align-items: center;
+    justify-content: center; flex-shrink: 0; }
+  .p-text h5 { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+  .p-text p { font-size: 12px; color: var(--muted); line-height: 1.6; }
+
+  /* ── 차트 컨테이너 ── */
+  .chart-box { background: var(--card); border-radius: 12px; padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07); margin-bottom: 16px; }
+  .chart-box canvas { max-height: 320px; }
+
+  /* ── 반응형 ── */
+  @media (max-width: 600px) {
+    .rank-grid { grid-template-columns: 1fr 1fr; }
+    .complex-grid { grid-template-columns: 1fr; }
+    .final-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  /* ── 기타 ── */
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 10px;
+    font-size: 11px; font-weight: 700; }
+  .badge-new { background: #e8f8f5; color: #1abc9c; }
+  .badge-old { background: #f2f3f4; color: #7f8c8d; }
+  .divider { height: 1px; background: var(--border); margin: 20px 0; }
+  .note { font-size: 11px; color: var(--muted); background: #f7f9fc; border-radius: 6px;
+    padding: 8px 12px; margin-top: 8px; line-height: 1.6; }
+  .note::before { content: '📌 '; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ 헤더 ═══════════════ -->
+<header class="site-header">
+  <h1>🏠 서영 아파트 매수 검토 리포트</h1>
+  <div class="subtitle">안양·의왕 인덕원 생활권 단지 분석 · 2026년 4월 기준</div>
+  <div class="meta-pills">
+    <span class="pill">현금 <b>4.8억</b></span>
+    <span class="pill">금리 <b>4.3%</b></span>
+    <span class="pill">상환 <b>30년 원리금균등</b></span>
+    <span class="pill">대출 1억당 <b>월 49.5만원</b></span>
+    <span class="pill">취득세·중개비·수리비 <b>별도</b></span>
+  </div>
+</header>
+
+<!-- ═══════════════ 네비 탭 ═══════════════ -->
+<nav class="nav-tabs" id="navTabs">
+  <button class="active" onclick="showTab('conclusion', this)">📊 결론·순위</button>
+  <button onclick="showTab('calculator', this)">🧮 월상환 계산</button>
+  <button onclick="showTab('compare', this)">📋 단지 비교</button>
+  <button onclick="showTab('detail', this)">🏢 단지 상세</button>
+  <button onclick="showTab('district', this)">🏫 학군·상권</button>
+  <button onclick="showTab('traffic', this)">🚇 교통호재</button>
+  <button onclick="showTab('final', this)">✅ 최종 판단</button>
+</nav>
+
+<!-- ═══════════════ 0. 결론·순위 ═══════════════ -->
+<section class="section active" id="conclusion">
+  <p class="sec-desc">현금 4.8억 기준 / 대출 부담·입지·브랜드·교통호재 종합 순위</p>
+
+  <div class="rank-grid" style="margin-bottom:24px;">
+    <div class="rank-card r1">
+      <div class="rank-num">🥇 1순위 — 안전형</div>
+      <div class="rank-label">동아에코빌<br>삼성래미안</div>
+      <div class="rank-names">의왕 포일·내손동</div>
+      <div class="rank-desc">7억대 매수 시 월상환 130~180만. 대출 스트레스 낮고 호재 간접 수혜. 방어형 안정 선택.</div>
+    </div>
+    <div class="rank-card r2">
+      <div class="rank-num">🥈 2순위 — 밸런스형</div>
+      <div class="rank-label">래미안더포인트<br>두산위브 2단지<br>대림2차</div>
+      <div class="rank-names">인덕원역·포일동 생활권</div>
+      <div class="rank-desc">월상환 180~230만. 입지·브랜드·교통호재 밸런스. 8억 중반 이하가 매수 포인트.</div>
+    </div>
+    <div class="rank-card r3">
+      <div class="rank-num">🥉 3순위 — 신중형</div>
+      <div class="rank-label">에버하임<br>두산위브 1단지</div>
+      <div class="rank-names">의왕 내손·포일동</div>
+      <div class="rank-desc">실거주 만족도 양호. 9억 중반 이상이면 가성비 재검토 필요.</div>
+    </div>
+    <div class="rank-card r4">
+      <div class="rank-num">⚠️ 4순위 — 부담형</div>
+      <div class="rank-label">인센푸<br>퍼스비엘</div>
+      <div class="rank-names">안양·의왕 프리미엄</div>
+      <div class="rank-desc">좋은 단지이나 가격이 이미 높음. 현금 4.8억 기준 59타입 이상은 월 300만 접근.</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="sec-title">🔢 핵심 KPI</div>
+  <div class="kpi-row">
+    <div class="kpi" style="border-left-color:var(--rank1)">
+      <div class="kpi-label">최저 안전 매수가</div>
+      <div class="kpi-value" style="color:var(--rank1)">7.0억</div>
+      <div class="kpi-sub">동아에코빌 24평 기준 · 월 99만</div>
+    </div>
+    <div class="kpi" style="border-left-color:var(--rank2)">
+      <div class="kpi-label">밸런스 매수가</div>
+      <div class="kpi-value" style="color:var(--rank2)">8.6억</div>
+      <div class="kpi-sub">더포인트·두산위브2 24평 · 월 188만</div>
+    </div>
+    <div class="kpi" style="border-left-color:var(--rank3)">
+      <div class="kpi-label">실질 안정 상한선</div>
+      <div class="kpi-value" style="color:var(--rank3)">10.0억</div>
+      <div class="kpi-sub">취득세·부대비용 감안 심리적 상한</div>
+    </div>
+    <div class="kpi" style="border-left-color:var(--rank4)">
+      <div class="kpi-label">이론 최대 대출 한도</div>
+      <div class="kpi-value" style="color:var(--rank4)">10.8억</div>
+      <div class="kpi-sub">생애최초 6억 + 현금 4.8억</div>
+    </div>
+  </div>
+
+  <div class="chart-box">
+    <div class="card-title">단지별 월상환 비교 (추천 매수가 기준)</div>
+    <canvas id="rankChart"></canvas>
+  </div>
+
+  <div class="note">이 리포트는 개인 검토 목적으로 작성되었으며 투자 권유가 아닙니다. 최종 판단 전 최신 실거래가 및 금융 조건을 반드시 확인하세요.</div>
+</section>
+
+<!-- ═══════════════ 1. 월상환 계산기 ═══════════════ -->
+<section class="section" id="calculator">
+  <div class="sec-title">🧮 월상환 계산기</div>
+  <p class="sec-desc">매수가를 조절하면 대출금·월상환·연간 부담이 실시간으로 계산됩니다.</p>
+
+  <div class="calc-wrap" style="margin-bottom:20px;">
+    <div class="calc-row">
+      <label>매수가</label>
+      <div class="range-wrap">
+        <input type="range" id="priceSlider" min="70" max="130" value="86" step="1"
+          oninput="updateCalc()">
+      </div>
+      <span id="priceDisplay" style="font-size:20px;font-weight:800;color:var(--navy);min-width:70px;">8.6억</span>
+    </div>
+    <div class="calc-result">
+      <div class="calc-item">
+        <div class="c-label">대출금</div>
+        <div class="c-value" id="loanAmount">3.8억</div>
+        <div class="c-sub">매수가 - 현금 4.8억</div>
+      </div>
+      <div class="calc-item">
+        <div class="c-label">월 상환액</div>
+        <div class="c-value" id="monthlyPay">188만</div>
+        <div class="c-sub" id="monthlyGrade">안정 구간</div>
+      </div>
+      <div class="calc-item">
+        <div class="c-label">연 상환액</div>
+        <div class="c-value" id="yearlyPay">2,256만</div>
+        <div class="c-sub">세후 월 1,000만 기준</div>
+      </div>
+      <div class="calc-item">
+        <div class="c-label">월 수입 대비</div>
+        <div class="c-value" id="dtiRatio">18.8%</div>
+        <div class="c-sub" id="dtiGrade">세후 1,000만 기준</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-title" style="margin-top:24px;">📊 매수가별 월상환 기준표</div>
+  <div class="card">
+    <table>
+      <thead>
+        <tr>
+          <th>매수가</th><th>대출금</th><th>월상환</th><th>연상환</th><th>수입 대비</th><th>판단</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>7.5억</td><td>2.7억</td><td>134만</td><td>1,608만</td><td>13.4%</td><td style="color:var(--rank1);font-weight:700;">✅ 매우 안정</td></tr>
+        <tr><td>8.0억</td><td>3.2억</td><td>158만</td><td>1,896만</td><td>15.8%</td><td style="color:var(--rank1);font-weight:700;">✅ 안정</td></tr>
+        <tr class="highlight-row"><td>8.6억</td><td>3.8억</td><td>188만</td><td>2,256만</td><td>18.8%</td><td style="color:var(--rank2);font-weight:700;">👍 밸런스</td></tr>
+        <tr><td>9.0억</td><td>4.2억</td><td>208만</td><td>2,496만</td><td>20.8%</td><td style="color:var(--rank2);font-weight:700;">👍 가능</td></tr>
+        <tr><td>9.5억</td><td>4.7억</td><td>233만</td><td>2,796만</td><td>23.3%</td><td style="color:var(--rank3);font-weight:700;">⚠️ 신중</td></tr>
+        <tr><td>10.0억</td><td>5.2억</td><td>257만</td><td>3,084만</td><td>25.7%</td><td style="color:var(--rank3);font-weight:700;">⚠️ 부담</td></tr>
+        <tr><td>10.5억</td><td>5.7억</td><td>282만</td><td>3,384만</td><td>28.2%</td><td style="color:var(--rank4);font-weight:700;">❌ 무리</td></tr>
+        <tr><td>11.0억</td><td>6.2억</td><td>307만</td><td>3,684만</td><td>30.7%</td><td style="color:var(--rank4);font-weight:700;">❌ 무리</td></tr>
+        <tr><td>12.0억</td><td>7.2억</td><td>356만</td><td>4,272만</td><td>35.6%</td><td style="color:var(--rank4);font-weight:700;">❌ 위험</td></tr>
+      </tbody>
+    </table>
+    <div class="note">세후 월 1,000만 (연 1.2억) 기준. 관리비·차량·생활비·비상금 별도. 생애최초 한도 6억 초과 시 대출 불가.</div>
+  </div>
+
+  <div class="chart-box">
+    <div class="card-title">매수가별 월상환액 시각화</div>
+    <canvas id="payChart"></canvas>
+  </div>
+</section>
+
+<!-- ═══════════════ 2. 단지 비교 ═══════════════ -->
+<section class="section" id="compare">
+  <div class="sec-title">📋 단지별 핵심 지표 비교</div>
+  <p class="sec-desc">모든 단지를 한 화면에서 비교합니다. 클릭해서 정렬할 수 있습니다.</p>
+
+  <div class="compare-table-wrap card">
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>단지명</th><th>위치</th><th>세대</th><th>연식</th><th>추천 매수가</th><th>월상환</th><th>KB시세</th><th>순위</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="name">동아에코빌</td><td>의왕 포일동</td><td>541</td>
+          <td><span class="badge badge-old">2001년 26년</span></td>
+          <td>7.0~8.7억</td><td style="color:var(--rank1);font-weight:700;">134~193만</td>
+          <td>8.0억</td><td class="rank r1c">1순위</td>
+        </tr>
+        <tr>
+          <td class="name">삼성래미안</td><td>의왕 내손동</td><td>586</td>
+          <td><span class="badge badge-old">2001년 26년</span></td>
+          <td>7.7~8.5억</td><td style="color:var(--rank1);font-weight:700;">143~183만</td>
+          <td>8.15억</td><td class="rank r1c">1순위</td>
+        </tr>
+        <tr>
+          <td class="name">래미안더포인트</td><td>안양 평촌동</td><td>502↑</td>
+          <td><span class="badge badge-old">구축</span></td>
+          <td>8.6~8.8억</td><td style="color:var(--rank2);font-weight:700;">188~198만</td>
+          <td>8.6억</td><td class="rank r2c">2순위</td>
+        </tr>
+        <tr>
+          <td class="name">두산위브 2단지</td><td>의왕 포일동</td><td>447</td>
+          <td><span class="badge badge-old">2009년 18년</span></td>
+          <td>8.6~9.0억</td><td style="color:var(--rank2);font-weight:700;">188~208만</td>
+          <td>8.6억</td><td class="rank r2c">2순위</td>
+        </tr>
+        <tr>
+          <td class="name">대림2차</td><td>안양 평촌동</td><td>862</td>
+          <td><span class="badge badge-old">2004년 22년</span></td>
+          <td>8.5~9.5억</td><td style="color:var(--rank2);font-weight:700;">183~233만</td>
+          <td>9.5억</td><td class="rank r2c">2순위</td>
+        </tr>
+        <tr>
+          <td class="name">래미안에버하임</td><td>의왕 내손동</td><td>696</td>
+          <td><span class="badge badge-old">2009년 18년</span></td>
+          <td>9.0~10.0억</td><td style="color:var(--rank3);font-weight:700;">208~257만</td>
+          <td>9.5~10억</td><td class="rank r3c">3순위</td>
+        </tr>
+        <tr>
+          <td class="name">두산위브 1단지</td><td>의왕 포일동</td><td>450</td>
+          <td><span class="badge badge-old">2009년 18년</span></td>
+          <td>9.3~9.7억</td><td style="color:var(--rank3);font-weight:700;">223~242만</td>
+          <td>9.3억</td><td class="rank r3c">3순위</td>
+        </tr>
+        <tr>
+          <td class="name">인센푸</td><td>안양 평촌동</td><td>1,996</td>
+          <td><span class="badge badge-old">2001년 26년</span></td>
+          <td>9.5~12억</td><td style="color:var(--rank4);font-weight:700;">233~356만</td>
+          <td>11.85억</td><td class="rank r4c">4순위</td>
+        </tr>
+        <tr>
+          <td class="name">퍼스비엘</td><td>의왕 내손동</td><td>2,180</td>
+          <td><span class="badge badge-new">2026년 신축</span></td>
+          <td>8.5~14억↑</td><td style="color:var(--rank4);font-weight:700;">183~400만↑</td>
+          <td>10.17억↑</td><td class="rank r4c">4순위</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="chart-box">
+    <div class="card-title">단지별 연식 vs 추천 최저 매수가</div>
+    <canvas id="compareChart"></canvas>
+  </div>
+</section>
+
+<!-- ═══════════════ 3. 단지 상세 ═══════════════ -->
+<section class="section" id="detail">
+  <div class="sec-title">🏢 단지별 상세 분석</div>
+  <p class="sec-desc">각 단지의 카드를 펼치면 상세 분석·매수 판단을 볼 수 있습니다.</p>
+
+  <div class="complex-grid" id="complexGrid"></div>
+</section>
+
+<!-- ═══════════════ 4. 학군·상권 ═══════════════ -->
+<section class="section" id="district">
+  <div class="sec-title">🏫 학군·상권 권역 비교</div>
+  <p class="sec-desc">압도적인 평촌 메인 학원가는 아니지만, 접근 가능한 수준. 실거주 편의는 무난.</p>
+
+  <div class="zone-grid">
+    <div class="zone-card">
+      <span class="zone-badge">인덕원역·평촌동 권역</span>
+      <h4>인센푸 · 래미안더포인트 · 대림2차</h4>
+      <p>교통호재 직접 수혜. 평촌 생활권 접근성 가장 좋음. 평촌 메인 학원가까지 이동 필요하지만 거리상 가장 가까움.</p>
+    </div>
+    <div class="zone-card">
+      <span class="zone-badge">포일동 권역</span>
+      <h4>동아에코빌 · 두산위브 1·2단지</h4>
+      <p>조용한 주거지 분위기. 롯데마트·계원대·인덕원역 접근 가능. 교통호재는 직접+간접 혼합. 실거주 편의 무난.</p>
+    </div>
+    <div class="zone-card">
+      <span class="zone-badge">내손동 권역</span>
+      <h4>삼성래미안 · 에버하임 · 퍼스비엘</h4>
+      <p>내손·포일 생활권. 퍼스비엘 입주로 분위기 개선 기대. 역세권 프리미엄보다 호재 간접수혜 구조로 보는 게 맞음.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <div class="sec-title">📚 학군 포인트</div>
+  <div class="card">
+    <p style="font-size:13px;line-height:1.9;color:var(--text);">
+      이 지역 단지들은 <strong>"평촌 학원가를 완전히 못 쓰는 곳은 아니고"</strong>, 인덕원·내손·포일 실거주 + 평촌 학원가 접근으로 봐야 합니다.<br><br>
+      • 학원가만 보면: <strong>인덕원역·평촌동 권역</strong>이 유리 (인센푸, 더포인트, 대림2차)<br>
+      • 조용한 주거환경: <strong>포일·내손동 권역</strong> (동아에코빌, 삼성래미안, 두산위브)<br>
+      • 신축·커뮤니티: <strong>퍼스비엘</strong> 입주 후 내손동 분위기 상향 기대
+    </p>
+  </div>
+</section>
+
+<!-- ═══════════════ 5. 교통호재 ═══════════════ -->
+<section class="section" id="traffic">
+  <div class="sec-title">🚇 교통호재 정리</div>
+  <p class="sec-desc">호재는 이미 가격에 상당 부분 반영됨. "저평가 호재"보다 "지속 수혜" 관점으로 봐야 함.</p>
+
+  <div class="traffic-item">
+    <div class="traffic-icon">🚄</div>
+    <div class="traffic-text">
+      <h5>GTX-C — 인덕원역</h5>
+      <p>서울 삼성역까지 15분 이내 접근 기대. 안양시 공식 발표 근거. 인덕원 직접 수혜 단지: 인센푸, 더포인트, 대림2차. 이미 가격에 상당 반영.</p>
+    </div>
+  </div>
+  <div class="traffic-item">
+    <div class="traffic-icon">🚈</div>
+    <div class="traffic-text">
+      <h5>월판선 — 월곶~판교</h5>
+      <p>판교·광명·시흥 방향 접근성 개선. 인덕원역 환승 연계. 인덕원 생활권 전반에 추가 교통 프리미엄.</p>
+    </div>
+  </div>
+  <div class="traffic-item">
+    <div class="traffic-icon">🚋</div>
+    <div class="traffic-text">
+      <h5>인동선 — 인덕원~동탄</h5>
+      <p>동탄·수원·의왕·안양 연결. 내손·포일 쪽은 <strong>농수산물시장역·내손역</strong> 접근성이 핵심. 의왕시의회 2025년 내손역·농수산물시장역 출입구 신설 촉구 보도 있음.</p>
+    </div>
+  </div>
+  <div class="traffic-item">
+    <div class="traffic-icon">🏗️</div>
+    <div class="traffic-text">
+      <h5>인덕원 복합환승센터</h5>
+      <p>역 주변 상권·주거환경 정비 기대. 인덕원역 일대 리모델링·개발로 상권 활성화 예상.</p>
+    </div>
+  </div>
+  <div class="traffic-item">
+    <div class="traffic-icon">🔗</div>
+    <div class="traffic-text">
+      <h5>4중 역세권 — 인덕원역</h5>
+      <p>기존 4호선 + GTX-C + 월판선 + 인동선. 안양시가 "4중 역세권"으로 마케팅 중. 완공 시 교통 편의성 크게 개선되나 공사 기간 변동성 주의.</p>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px;">
+    <div class="card-title">⚠️ 호재 주의사항</div>
+    <p style="font-size:13px;color:var(--muted);line-height:1.8;">
+      • GTX-C, 월판선, 인동선 모두 <strong>완공 시점 변동 가능성</strong>이 있습니다.<br>
+      • 인센푸, 퍼스비엘, 더포인트는 "아무도 모르는 저평가"가 아닌 <strong>시장이 이미 알고 가격을 붙인 상태</strong>입니다.<br>
+      • 호재 수혜를 고려하더라도 <strong>현재 월상환 부담이 감당 가능한 범위인지</strong>가 더 중요한 판단 기준입니다.
+    </p>
+  </div>
+</section>
+
+<!-- ═══════════════ 6. 최종 판단 ═══════════════ -->
+<section class="section" id="final">
+  <div class="sec-title">✅ 서영 예산 기준 최종 판단</div>
+  <p class="sec-desc">세후 월 1,000만 (맞벌이) / 현금 4.8억 / 관리비·차량·비상금 별도 감안</p>
+
+  <div class="final-grid" style="margin-bottom:24px;">
+    <div class="final-card final-safe">
+      <h4>✅ 안전하게 가면</h4>
+      <div class="final-names">삼성래미안 · 동아에코빌</div>
+      <div class="final-range">24/32평 · 월상환 130~183만<br>대출 스트레스 낮음 · 방어형 실거주</div>
+    </div>
+    <div class="final-card final-balance">
+      <h4>👍 밸런스 좋게 가면</h4>
+      <div class="final-names">래미안더포인트 · 두산위브2 · 대림2차 24평</div>
+      <div class="final-range">월상환 180~210만<br>입지·브랜드·호재 밸런스</div>
+    </div>
+    <div class="final-card final-stretch">
+      <h4>⚠️ 욕심내면</h4>
+      <div class="final-names">에버하임 30평 · 대림2차 32평 · 두산위브1 32평</div>
+      <div class="final-range">월상환 220~260만<br>살 수는 있으나 생활 여유 줄어듦</div>
+    </div>
+    <div class="final-card final-risk">
+      <h4>❌ 무리수 가능성</h4>
+      <div class="final-names">퍼스비엘 59↑ · 인센푸 32평</div>
+      <div class="final-range">월상환 300만 이상<br>관리비·차량·부모님·여행까지 빡셈</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <div class="sec-title" style="margin-bottom:16px;">🎯 내가 서영이라면 이렇게 본다</div>
+  <div class="priority-list">
+    <div class="priority-item" style="border-left-color:var(--rank1)">
+      <div class="p-num" style="background:var(--rank1)">1</div>
+      <div class="p-text">
+        <h5>동아에코빌 7억대 — 제일 현실적</h5>
+        <p>호재 베팅도 가능하고 월상환 부담이 낮다. "상승 베팅 + 월상환 안정성" 조합 중 가장 좋은 옵션.</p>
+      </div>
+    </div>
+    <div class="priority-item" style="border-left-color:var(--rank1)">
+      <div class="p-num" style="background:var(--rank1)">2</div>
+      <div class="p-text">
+        <h5>삼성래미안 7억 후반~8억 초반 — 래미안 브랜드 + 안정성</h5>
+        <p>구축 감수 가능하면 방어형으로 최적. 하락장에도 대출 부담이 과하지 않음.</p>
+      </div>
+    </div>
+    <div class="priority-item" style="border-left-color:var(--rank2)">
+      <div class="p-num" style="background:var(--rank2)">3</div>
+      <div class="p-text">
+        <h5>래미안더포인트 8.6~8.8억 — 인덕원 호재 직접 수혜</h5>
+        <p>8.6억이면 월 188만으로 무리 없음. 9억 넘으면 협상하거나 패스.</p>
+      </div>
+    </div>
+    <div class="priority-item" style="border-left-color:var(--rank2)">
+      <div class="p-num" style="background:var(--rank2)">4</div>
+      <div class="p-text">
+        <h5>두산위브 2단지 8억 중후반 — 연식·실거주 만족도 좋음</h5>
+        <p>2009년식이라 2001년식 구축들보다 덜 낡음. 1단지보다 가격 접근성 좋음.</p>
+      </div>
+    </div>
+    <div class="priority-item" style="border-left-color:var(--rank4)">
+      <div class="p-num" style="background:var(--rank4)">5</div>
+      <div class="p-text">
+        <h5>퍼스비엘은 49타입 급매만 — 59타입 11억 이상은 부담</h5>
+        <p>신축 프리미엄을 돈 주고 사는 선택. 싸게 사는 선택이 아님. 49타입 급매가 아니면 패스 고려.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:20px; background: linear-gradient(135deg, var(--navy), var(--navy-light)); color: #fff;">
+    <div class="card-title" style="color: var(--gold); font-size:16px;">🔑 진짜 매수 후보 압축</div>
+    <p style="font-size:15px;font-weight:700;margin-bottom:8px;">동아에코빌 / 삼성래미안 / 래미안더포인트 / 두산위브 2단지</p>
+    <p style="font-size:13px;opacity:0.8;line-height:1.7;">이 4개를 먼저 보고, 나머지는 가격 협상 or 급매 기회가 생겼을 때 검토하는 방식이 현실적.</p>
+  </div>
+</section>
+
+<!-- ═══════════════ JS ═══════════════ -->
+<script>
+// ── 탭 전환 ──
+function showTab(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tabs button').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ── 월상환 계산기 ──
+function calcMonthly(price) {
+  const loan = Math.max(0, price - 4.8);
+  const r = 0.043 / 12;
+  const n = 360;
+  if (loan <= 0) return 0;
+  return loan * 1e8 * r * Math.pow(1+r,n) / (Math.pow(1+r,n)-1);
+}
+
+function updateCalc() {
+  const val = parseInt(document.getElementById('priceSlider').value);
+  const price = val / 10;
+  const loan = Math.max(0, price - 4.8);
+  const monthly = calcMonthly(price);
+  const monthlyMon = monthly / 10000;
+  const yearlyMon = monthly * 12 / 10000;
+  const dti = (monthly * 12) / (1000 * 10000) * 100;
+
+  document.getElementById('priceDisplay').textContent = price.toFixed(1) + '억';
+  document.getElementById('loanAmount').textContent = loan.toFixed(1) + '억';
+  document.getElementById('monthlyPay').textContent = Math.round(monthlyMon) + '만';
+  document.getElementById('yearlyPay').textContent = Math.round(yearlyMon).toLocaleString() + '만';
+  document.getElementById('dtiRatio').textContent = dti.toFixed(1) + '%';
+
+  const mEl = document.getElementById('monthlyPay');
+  const gEl = document.getElementById('monthlyGrade');
+  const dEl = document.getElementById('dtiGrade');
+
+  if (monthlyMon < 160) {
+    mEl.className = 'c-value safe'; gEl.textContent = '✅ 매우 안정';
+    dEl.textContent = '✅ 여유';
+  } else if (monthlyMon < 210) {
+    mEl.className = 'c-value safe'; gEl.textContent = '✅ 안정 구간';
+    dEl.textContent = '👍 괜찮음';
+  } else if (monthlyMon < 260) {
+    mEl.className = 'c-value warn'; gEl.textContent = '⚠️ 신중 구간';
+    dEl.textContent = '⚠️ 부담 시작';
+  } else {
+    mEl.className = 'c-value danger'; gEl.textContent = '❌ 부담 구간';
+    dEl.textContent = '❌ 무리';
+  }
+}
+updateCalc();
+
+// ── 단지 데이터 ──
+const complexes = [
+  {
+    name: '동아에코빌', rank: 1,
+    location: '의왕시 포일동 흥안대로456번길 125',
+    units: 541, year: 2001,
+    areas: ['24평', '32평'],
+    minP: 7.0, maxP: 8.7,
+    kbPrice: '8.0억', recentTrade: '7.0억', avgAsk: '8.7억',
+    monthly: '7.5억→134만 / 8.0억→158만 / 8.7억→193만',
+    pros: ['가격 대비 안정적', '인덕원·인동선 호재권', '월상환 부담 가장 낮음', '상승 베팅 + 안정성 조합'],
+    cons: ['브랜드 약함', '구축 느낌 (26년)', '신축감 없음'],
+    verdict: '서영 예산에서 제일 현실적인 후보. 7억대 중후반 + 대출 3억 안팎이면 심리적으로도 안정적. 호재 베팅도 가능.',
+    traffic: '포일동은 인덕원역 직접 호재 + 인동선 농수산물시장역·내손역 간접 수혜.',
+    note: 'KB 기준 32평 일반가 8.0억, 최근 실거래 7.0억, 매물평균 8.7억 (2026.04.24)'
+  },
+  {
+    name: '삼성래미안 (내손동)', rank: 1,
+    location: '의왕시 내손동 포일로 39',
+    units: 586, year: 2001,
+    areas: ['24평', '32평'],
+    minP: 7.7, maxP: 8.5,
+    kbPrice: '8.15억', recentTrade: '8.05억', avgAsk: '8.46억',
+    monthly: '7.7억→143만 / 8.15억→166만 / 8.5억→183만',
+    pros: ['래미안 브랜드', '가격 안정적', '월상환 부담 낮음', '방어형 실거주 최적'],
+    cons: ['연식 (26년)', '주차·단지 상품성 체크 필요', '상승 탄력 약할 수 있음'],
+    verdict: '가장 "망하지 않는 선택지". 하락장이 와도 대출 부담이 과하지 않음. 래미안 브랜드 + 안정성 조합.',
+    traffic: '평촌역 도보 18분, 인덕원·인동선 간접 수혜권. 직접 역세권은 아님.',
+    note: 'KB 기준 32평 일반가 8.15억, 실거래 8.05억, 매물평균 8.46억 (2026.04.24)'
+  },
+  {
+    name: '래미안더포인트', rank: 2,
+    location: '인덕원역 생활권, 평촌동/포일동 경계',
+    units: 502, year: 0,
+    areas: ['24평', '32평'],
+    minP: 8.6, maxP: 9.2,
+    kbPrice: '8.6억', recentTrade: '8.6~8.85억', avgAsk: '-',
+    monthly: '8.6억→188만 / 9.0억→208만 / 9.2억→218만',
+    pros: ['인덕원 호재 직접권', '래미안 브랜드', '8억대 진입 가능', '교통 프리미엄 지속 수혜'],
+    cons: ['대단지 아님', '신축감 약함', '9억 넘으면 매력 감소'],
+    verdict: '8.6~8.8억이면 꽤 괜찮음. 9억 이상이면 협상 필요. 인덕원 4중 역세권 직접 수혜.',
+    traffic: '인덕원역 직접 생활권. GTX-C, 월판선, 인동선, 4호선 모두 수혜.',
+    note: '2026년 3월 24평 실거래 8.6~8.85억 확인 (KB 기준)'
+  },
+  {
+    name: '두산위브 2단지', rank: 2,
+    location: '의왕시 포일동',
+    units: 447, year: 2009,
+    areas: ['24~28평', '32평'],
+    minP: 8.6, maxP: 9.1,
+    kbPrice: '8.6억', recentTrade: '8.68억', avgAsk: '9.03억',
+    monthly: '8.6억→188만 / 9.0억→208만 / 9.1억→213만',
+    pros: ['2009년식 (상대적 신축)', '1단지보다 가격 접근성 좋음', '실거주 만족도 양호'],
+    cons: ['대단지 아님 (447세대)', '소형 위주'],
+    verdict: '2단지 8억 중후반이면 괜찮음. 1단지 대비 가격 접근성 우위. 2009년식으로 구축 느낌 덜함.',
+    traffic: '포일동 인덕원역 접근 가능. 인동선 호재 간접권.',
+    note: 'KB 기준 92㎡ 일반가 8.6억, 실거래 8.68억, 매물평균 9.03억'
+  },
+  {
+    name: '대림2차', rank: 2,
+    location: '안양 평촌동, 인덕원역 생활권',
+    units: 862, year: 2004,
+    areas: ['24평', '32평'],
+    minP: 8.5, maxP: 10.1,
+    kbPrice: '9.5억', recentTrade: '9.5억', avgAsk: '10.09억',
+    monthly: '8.5억→183만 / 9.5억→233만 / 10억→257만',
+    pros: ['인덕원역 접근성', '세대수 무난 (862)', '평촌 생활권'],
+    cons: ['32평 10억 접근 시 가성비 애매', '22년 연식'],
+    verdict: '24평 8억 중반 이하면 괜찮음. 32평 9억 초중반은 검토, 10억이면 비쌈. "그 돈이면 더포인트?" 비교 필요.',
+    traffic: '인덕원역 접근성 좋음. GTX-C, 월판선 직접 수혜.',
+    note: 'KB 기준 32평 일반가 9.5억, 실거래 9.5억, 매물평균 10.09억'
+  },
+  {
+    name: '래미안에버하임', rank: 3,
+    location: '의왕시 내손동',
+    units: 696, year: 2009,
+    areas: ['20평대', '30평대', '40평대'],
+    minP: 8.8, maxP: 10.4,
+    kbPrice: '9.5~10억', recentTrade: '116㎡ 10.4억 (2026.02)', avgAsk: '-',
+    monthly: '9.0억→208만 / 9.5억→233만 / 10억→257만',
+    pros: ['내손동 래미안 브랜드', '2009년식 (덜 낡음)', '다양한 평형'],
+    cons: ['인덕원역 직접 역세권 아님', '가격 이미 높음', '10억 접근 시 가성비 의문'],
+    verdict: '9억 초중반이면 검토, 10억 넘으면 "그 돈으로 더포인트/두산위브?" 비교해야 함.',
+    traffic: '내손동 쪽으로 인덕원 직접권보다 간접 수혜. 퍼스비엘 개발로 내손 분위기 개선 기대.',
+    note: '2026년 2월 116㎡(40평대) 10.4억 거래 확인'
+  },
+  {
+    name: '두산위브 1단지', rank: 3,
+    location: '의왕시 포일동',
+    units: 450, year: 2009,
+    areas: ['32평'],
+    minP: 9.3, maxP: 9.7,
+    kbPrice: '9.3억', recentTrade: '9.35억', avgAsk: '9.69억',
+    monthly: '9.3억→223만 / 9.5억→233만 / 9.7억→242만',
+    pros: ['2009년식', '관리 잘됨 (실거주 후기)', '주차 여유', '저평가 느낌 있다는 의견'],
+    cons: ['대단지 아님 (450세대)', '2단지 대비 가격 높음'],
+    verdict: '실거주 만족도 높다는 후기 있음. 9.5억 이상은 고민. 2단지보다 입지 선호라면 검토.',
+    traffic: '포일동 인덕원역 접근. 인동선 간접권.',
+    note: 'KB 기준 32평 일반가 9.3억, 실거래 9.35억, 매물평균 9.69억 (2026.04.24)'
+  },
+  {
+    name: '인센푸 (인덕원센트럴푸르지오)', rank: 4,
+    location: '안양시 동안구 학의로 390',
+    units: 1996, year: 2001,
+    areas: ['24평', '32평'],
+    minP: 9.5, maxP: 12.5,
+    kbPrice: '11.85억', recentTrade: '11.77억', avgAsk: '12.5억',
+    monthly: '9.5억→233만 / 11억→307만 / 12억→356만',
+    pros: ['대단지 1,996세대', '인덕원역 4중 역세권 직접 수혜', '평촌 생활권'],
+    cons: ['가격 이미 상급지 수준', '구축 26년', '32평 대출 7억 = 생애최초 한도 초과 가능'],
+    verdict: '좋은 단지이나 현금 4.8억 기준으로는 이미 가격이 높음. 24평 저층 급매 아니면 부담 큼.',
+    traffic: '인덕원역 4중 역세권 (4호선+GTX-C+월판선+인동선) 직접 수혜 핵심 단지.',
+    note: 'KB 기준 32평 일반가 11.85억, 실거래 11.77억, 매물평균 12.5억 (2026.04.24)'
+  },
+  {
+    name: '퍼스비엘', rank: 4,
+    location: '의왕시 내손동 661 일원',
+    units: 2180, year: 2026,
+    areas: ['49㎡(20평대)', '59㎡(24평)', '74㎡(30평)', '84㎡(34평)'],
+    minP: 8.5, maxP: 14.0,
+    kbPrice: '10.17억↑', recentTrade: '분양가 기준 (입주 2026.06)', avgAsk: '-',
+    monthly: '9억→208만 / 10억→257만 / 11억→307만 / 12억→356만',
+    pros: ['2026년 신축', '대단지 2,180세대', '커뮤니티·상품성 압도', '재개발 신축 프리미엄'],
+    cons: ['가격 부담 큼', '입주장 변동성', '프리미엄 과열 가능성', '59타입 11억 이상 = 월 300만'],
+    verdict: '좋은 단지이나 서영 예산으로는 49타입 급매만 검토. 59타입 11억↑는 부담. "신축 프리미엄을 돈 주고 사는 선택".',
+    traffic: '내손동 권역. 인덕원 호재 간접 수혜. 인동선 내손역 예정.',
+    note: '분양가: 59A 7.8억, 59B 7.71억, 74 9.23억, 84A 10.79억. KB 시세 10.17억↑ (2026.04)'
+  }
+];
+
+// ── 단지 카드 렌더 ──
+function renderComplexes() {
+  const grid = document.getElementById('complexGrid');
+  const rankColors = ['', '#27ae60', '#2980b9', '#e67e22', '#e74c3c'];
+  complexes.forEach((c, i) => {
+    const card = document.createElement('div');
+    card.className = 'complex-card';
+    card.innerHTML = `
+      <div class="complex-header" style="border-bottom:3px solid ${rankColors[c.rank]}">
+        <h3>${c.name}</h3>
+        <div class="location">📍 ${c.location}</div>
+        <div class="rank-badge" style="background:${rankColors[c.rank]}">${c.rank}</div>
+      </div>
+      <div class="complex-body">
+        <div class="spec-row" style="margin-top:10px;">
+          ${c.year > 0 ? `<span class="spec-tag">🏗 ${c.year}년${c.year===2026?' (신축)':(' ('+Math.max(0,2026-c.year)+'년차)')}</span>` : '<span class="spec-tag">구축</span>'}
+          <span class="spec-tag">🏘 ${c.units.toLocaleString()}세대</span>
+          ${c.areas.map(a=>`<span class="spec-tag">${a}</span>`).join('')}
+        </div>
+        <div class="price-range">${c.minP}~${c.maxP}억 <span>매수 검토 범위</span></div>
+        <div class="monthly">💸 ${c.monthly}</div>
+        <div class="pros-cons">
+          <div class="pros"><h5>장점</h5><ul>${c.pros.map(p=>`<li>${p}</li>`).join('')}</ul></div>
+          <div class="cons"><h5>단점</h5><ul>${c.cons.map(p=>`<li>${p}</li>`).join('')}</ul></div>
+        </div>
+        <div class="verdict-box">💡 ${c.verdict}</div>
+        <button class="toggle-btn" onclick="toggleDetail(this)">▼ KB시세·교통 상세 보기</button>
+        <div class="detail-content">
+          <div style="background:#f7f9fc;border-radius:8px;padding:10px;margin-top:8px;font-size:12px;line-height:1.8;">
+            <b>🚇 교통</b>: ${c.traffic}<br>
+            <b>📊 시세</b>: ${c.note}
+          </div>
+        </div>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function toggleDetail(btn) {
+  const detail = btn.nextElementSibling;
+  detail.classList.toggle('open');
+  btn.textContent = detail.classList.contains('open') ? '▲ 접기' : '▼ KB시세·교통 상세 보기';
+}
+
+renderComplexes();
+
+// ── 차트: 결론 ──
+new Chart(document.getElementById('rankChart'), {
+  type: 'bar',
+  data: {
+    labels: ['동아에코빌\n7.5억', '삼성래미안\n7.7억', '더포인트\n8.6억', '두산위브2\n8.6억', '대림2차\n8.5억', '에버하임\n9.0억', '두산위브1\n9.3억', '인센푸\n9.5억', '퍼스비엘\n10억'],
+    datasets: [{
+      label: '월상환 (만원)',
+      data: [134, 143, 188, 188, 183, 208, 223, 233, 257],
+      backgroundColor: [
+        '#27ae60','#27ae60','#2980b9','#2980b9','#2980b9',
+        '#e67e22','#e67e22','#e74c3c','#e74c3c'
+      ],
+      borderRadius: 6,
+    }]
+  },
+  options: {
+    responsive: true, plugins: { legend: { display: false },
+      tooltip: { callbacks: { label: (c) => `월 ${c.parsed.y}만원` } }
+    },
+    scales: {
+      y: { title: { display: true, text: '월상환 (만원)' },
+        ticks: { callback: v => v + '만' } },
+      x: { ticks: { font: { size: 11 } } }
+    }
+  }
+});
+
+// ── 차트: 월상환 기준표 ──
+new Chart(document.getElementById('payChart'), {
+  type: 'line',
+  data: {
+    labels: ['7.5억','8.0억','8.5억','9.0억','9.5억','10.0억','10.5억','11.0억','12.0억'],
+    datasets: [{
+      label: '월상환 (만원)',
+      data: [134, 158, 183, 208, 233, 257, 282, 307, 356],
+      borderColor: '#1a2b4e', backgroundColor: 'rgba(26,43,78,0.08)',
+      borderWidth: 2.5, pointBackgroundColor: '#c9a84c',
+      pointRadius: 5, fill: true, tension: 0.3,
+    }, {
+      label: '안전선 (200만)',
+      data: Array(9).fill(200),
+      borderColor: '#27ae60', borderDash: [6,4], borderWidth: 1.5,
+      pointRadius: 0,
+    }, {
+      label: '경고선 (260만)',
+      data: Array(9).fill(260),
+      borderColor: '#e74c3c', borderDash: [6,4], borderWidth: 1.5,
+      pointRadius: 0,
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: { tooltip: { callbacks: { label: (c) => `${c.dataset.label}: ${c.parsed.y}만원` } } },
+    scales: {
+      y: { title: { display: true, text: '월상환 (만원)' },
+        ticks: { callback: v => v + '만' } }
+    }
+  }
+});
+
+// ── 차트: 단지 비교 ──
+new Chart(document.getElementById('compareChart'), {
+  type: 'scatter',
+  data: {
+    datasets: [
+      { label: '1순위', data: [{x:2001,y:7.0},{x:2001,y:7.7}],
+        backgroundColor: '#27ae60', pointRadius: 10 },
+      { label: '2순위', data: [{x:0,y:8.6},{x:2009,y:8.6},{x:2004,y:8.5}],
+        backgroundColor: '#2980b9', pointRadius: 10 },
+      { label: '3순위', data: [{x:2009,y:8.8},{x:2009,y:9.3}],
+        backgroundColor: '#e67e22', pointRadius: 10 },
+      { label: '4순위', data: [{x:2001,y:9.5},{x:2026,y:8.5}],
+        backgroundColor: '#e74c3c', pointRadius: 10 },
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: { tooltip: { callbacks: {
+      label: (c) => `연식: ${c.parsed.x > 0 ? c.parsed.x+'년' : '구축'}, 최저매수가: ${c.parsed.y}억`
+    }}},
+    scales: {
+      x: { title: { display: true, text: '입주연도 (0=구축미상)' } },
+      y: { title: { display: true, text: '추천 최저매수가 (억)' },
+        ticks: { callback: v => v+'억' } }
+    }
+  }
+});
+</script>
+</body>
+</html>
