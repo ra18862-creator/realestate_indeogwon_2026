@@ -227,6 +227,77 @@
   .note { font-size: 11px; color: var(--muted); background: #f7f9fc; border-radius: 6px;
     padding: 8px 12px; margin-top: 8px; line-height: 1.6; }
   .note::before { content: '📌 '; }
+
+  /* ── 추천매물 기준 박스 ── */
+  .criteria-box { background: linear-gradient(135deg,#eef2fa,#f7f9fc); border: 1px solid var(--border);
+    border-left: 4px solid var(--navy); border-radius: 8px; padding: 14px 16px; margin-bottom: 16px; }
+  .criteria-box h4 { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+  .criteria-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .ctag { background: var(--navy); color: #fff; border-radius: 20px; padding: 3px 10px;
+    font-size: 11px; font-weight: 600; }
+  .ctag.bad { background: #e74c3c; }
+
+  /* ── 단지별 Top3 섹션 ── */
+  .complex-top3 { margin-bottom: 24px; }
+  .complex-top3 .top3-header { display: flex; align-items: center; gap: 10px;
+    margin-bottom: 12px; padding: 10px 14px; background: var(--navy); border-radius: 8px; }
+  .complex-top3 .top3-header h4 { color: #fff; font-size: 14px; font-weight: 700; margin: 0; }
+  .complex-top3 .top3-header .top3-rank { background: var(--gold); color: var(--navy);
+    border-radius: 20px; padding: 2px 10px; font-size: 11px; font-weight: 700; }
+  .top3-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+  .top3-card { background: var(--card); border-radius: 10px; padding: 14px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.07); position: relative;
+    border-top: 3px solid var(--border); }
+  .top3-card.rank1 { border-top-color: #f1c40f; }
+  .top3-card.rank2 { border-top-color: #95a5a6; }
+  .top3-card.rank3 { border-top-color: #cd7f32; }
+  .top3-badge { position: absolute; top: 10px; right: 10px; width: 24px; height: 24px;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 800; color: #fff; }
+  .top3-badge.b1 { background: #f1c40f; color: #333; }
+  .top3-badge.b2 { background: #95a5a6; }
+  .top3-badge.b3 { background: #cd7f32; }
+  .top3-card .t3-title { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 4px; padding-right: 30px; }
+  .top3-card .t3-price { font-size: 18px; font-weight: 800; color: var(--gold); margin-bottom: 6px; }
+  .top3-card .t3-meta { font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+  .top3-card .t3-desc { font-size: 12px; color: var(--text); line-height: 1.5; }
+  .top3-card .t3-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
+  .top3-card .t3-tag { background: #f0f4ff; color: var(--navy); border-radius: 4px;
+    padding: 2px 7px; font-size: 10px; font-weight: 600; }
+  .top3-card .t3-tag.good { background: #eafaf1; color: #1e8449; }
+  .top3-card .t3-tag.warn { background: #fef9e7; color: #b7600e; }
+
+  /* ── 블라인드 의견 ── */
+  .blind-thread { background: var(--card); border-radius: 12px; margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07); overflow: hidden; }
+  .blind-thread-header { padding: 14px 16px; cursor: pointer;
+    display: flex; justify-content: space-between; align-items: flex-start;
+    border-left: 4px solid var(--navy); }
+  .blind-thread-header:hover { background: #f7f9fc; }
+  .blind-thread-header h4 { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+  .blind-thread-header .bth-meta { font-size: 11px; color: var(--muted); }
+  .blind-thread-header .bth-arrow { font-size: 12px; color: var(--muted); flex-shrink: 0; padding-left: 8px; }
+  .blind-thread-body { display: none; padding: 0 16px 16px; border-top: 1px solid var(--border); }
+  .blind-thread-body.open { display: block; }
+  .sentiment-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+  .sentiment-tag { border-radius: 20px; padding: 3px 10px; font-size: 11px; font-weight: 700; }
+  .st-pos { background: #eafaf1; color: #1e8449; border: 1px solid #a9dfbf; }
+  .st-neg { background: #fdedec; color: #b03a2e; border: 1px solid #f1948a; }
+  .st-neu { background: #eaf4fb; color: #1a5276; border: 1px solid #aed6f1; }
+  .blind-comment { background: #f7f9fc; border-radius: 8px; padding: 10px 12px;
+    margin-top: 8px; font-size: 12px; line-height: 1.7; color: var(--text); }
+  .blind-comment .bc-who { font-size: 11px; color: var(--muted); margin-bottom: 4px; font-weight: 600; }
+  .blind-comment .bc-text { }
+  .blind-summary-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px; margin-bottom: 20px; }
+  .bsg-card { background: var(--card); border-radius: 10px; padding: 14px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06); border-top: 3px solid var(--navy); }
+  .bsg-card.pos { border-top-color: var(--rank1); }
+  .bsg-card.neg { border-top-color: var(--rank4); }
+  .bsg-card.neu { border-top-color: var(--rank2); }
+  .bsg-card h5 { font-size: 12px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+  .bsg-card ul { padding-left: 14px; }
+  .bsg-card li { font-size: 11px; color: var(--muted); line-height: 1.7; }
 </style>
 </head>
 <body>
@@ -254,6 +325,7 @@
   <button onclick="showTab('district', this)">🏫 학군·상권</button>
   <button onclick="showTab('traffic', this)">🚇 교통호재</button>
   <button onclick="showTab('final', this)">✅ 최종 판단</button>
+  <button onclick="showTab('blind', this)">💬 블라인드 의견</button>
 </nav>
 
 <!-- ═══════════════ 0. 결론·순위 ═══════════════ -->
@@ -320,45 +392,9 @@
 
   <div class="divider"></div>
 
-  <div class="sec-title">🎯 추천 매물 상세</div>
-  <p class="sec-desc">단지별로 실제 매물 중 추천할 만한 것들. 저층(5층 이하)·북향·낮은 층은 환금성 낮아 제외. 로얄층(10층 이상)·남향·코너 우선.</p>
-
-  <div class="card">
-    <div class="card-title">🏠 동아에코빌 추천 매물</div>
-    <div class="listing-card recommended">
-      <div class="listing-header">
-        <div class="listing-title">동아에코빌 102동 · 7.9억</div>
-        <div class="listing-price">7.9억</div>
-      </div>
-      <div class="listing-details">60m² (24평) · 18/22층 · 남동향 · 로얄층</div>
-      <div class="listing-desc">기본 상태, 확트인 전망, 뷰 짱, 입주협의 가능. 신혼부부 강추. 환금성 높음.</div>
-      <div class="listing-meta">📅 26.04.26 · 행운공인중개사</div>
-    </div>
-    <div class="listing-card recommended">
-      <div class="listing-header">
-        <div class="listing-title">동아에코빌 105동 · 8.7억</div>
-        <div class="listing-price">8.7억</div>
-      </div>
-      <div class="listing-details">84m² (32평) · 8/23층 · 남동향 · 중층</div>
-      <div class="listing-desc">입주물, 전체 샷시포함 올수리, 깨끗, 주인거주. 수리비 절약 가능.</div>
-      <div class="listing-meta">📅 26.04.27 · 21세기공인중개사</div>
-    </div>
-  </div>
-
-  <div class="card" style="margin-top:16px;">
-    <div class="card-title">🏠 삼성래미안 추천 매물</div>
-    <div class="listing-card recommended">
-      <div class="listing-header">
-        <div class="listing-title">삼성래미안 · 7.7억</div>
-        <div class="listing-price">7.7억</div>
-      </div>
-      <div class="listing-details">84m² (32평) · 고층 · 남향 · 로얄층</div>
-      <div class="listing-desc">래미안 브랜드, 안정적. 환금성 좋음.</div>
-      <div class="listing-meta">📅 최근 매물 · 확인 필요</div>
-    </div>
-  </div>
-
-  <div class="note">이 매물들은 네이버부동산 기준 예시. 실제 확인 시 층, 방향, 수리 상태 재검증 필수. 저층은 피하고 로얄층 우선.</div>
+  <div class="sec-title">🎯 추천 매물 — 단지별 Top 3</div>
+  <p class="sec-desc">환금성 기준으로 엄선한 단지별 Top 3. 매물 목록 탭에서 전체 Top 3 + 기준 설명을 볼 수 있습니다.</p>
+  <div class="note">추천 기준: 로얄층(10층↑) · 남향/남동/남서향 · 올수리 또는 깨끗한 상태 · 동일 면적 내 가성비. 저층(5층 이하)·북향 제외.</div>
 
   <div class="note">이 리포트는 개인 검토 목적으로 작성되었으며 투자 권유가 아닙니다. 최종 판단 전 최신 실거래가 및 금융 조건을 반드시 확인하세요.</div>
 </section>
@@ -547,7 +583,7 @@
           <td>9.3억</td><td class="rank r3c">3순위</td>
         </tr>
         <tr>
-          <td class="name">인센자</td><td>의왕 내손동</td><td>1,120</td>
+          <td class="name">인센자</td><td>의왕 내손동</td><td>2,540</td>
           <td><span class="badge badge-old">2020년 6년</span></td><td>5건</td>
           <td>9.0~10.2억</td><td style="color:var(--rank4);font-weight:700;">220~245만</td>
           <td>10.0억</td><td class="rank r4c">4순위</td>
@@ -615,7 +651,7 @@
         <tr>
           <td class="name">인덕원센트럴푸르지오</td><td>약 3건</td>
           <td>24~28평</td><td>8.7~9.5억</td><td style="color:var(--rank3);font-weight:700;">198~228만</td>
-          <td>포일동 인덕원역 접근성 좋음, 구축이지만 학군 양호, 위례과천선 미확정 호재 기대</td>
+          <td>포일동 인덕원역 접근성 좋음, 구축이지만 학군 양호, 위례과천선 하반기 제3자공고 예정 호재 기대</td>
         </tr>
         <tr>
           <td class="name">두산위브 1단지</td><td>약 13건</td>
@@ -784,7 +820,7 @@
     <div class="traffic-icon">🚈</div>
     <div class="traffic-text">
       <h5>위례과천선 — 위례~과천~인덕원</h5>
-      <p>위례신도시~과천~인덕원 연결. 인덕원역 환승으로 서울 접근성 개선 기대. 현재 미확정 상태로 공사 착수 시점 불투명.</p>
+      <p>위례신도시~과천~인덕원 연결. 인덕원역 환승으로 서울 접근성 개선 기대. <strong>경기도 철도기본계획 기반영, 2026년 하반기 제3자공고 예정</strong>. 착공 시점 미확정이나 추진 가시화 단계.</p>
     </div>
   </div>
   <div class="traffic-item">
@@ -885,6 +921,235 @@
     <p style="font-size:15px;font-weight:700;margin-bottom:8px;">동아에코빌 / 삼성래미안 / 래미안더포인트 / 두산위브 2단지</p>
     <p style="font-size:13px;opacity:0.8;line-height:1.7;">이 4개를 먼저 보고, 나머지는 가격 협상 or 급매 기회가 생겼을 때 검토하는 방식이 현실적.</p>
   </div>
+</section>
+
+<!-- ═══════════════ 7. 블라인드 의견 ═══════════════ -->
+<section class="section" id="blind">
+  <div class="sec-title">💬 블라인드 직장인 의견 요약</div>
+  <p class="sec-desc">블라인드 부동산 채널의 실제 직장인 의견을 정리했습니다. 투자 정보가 아닌 참고용 커뮤니티 의견이며, 개인 판단에 따라 참고하세요.</p>
+
+  <!-- 커뮤니티 감성 요약 -->
+  <div class="sec-title" style="font-size:15px;">📊 단지별 커뮤니티 감성 요약</div>
+  <div class="blind-summary-grid" style="margin-bottom:20px;">
+    <div class="bsg-card pos">
+      <h5>👍 인덕원삼성 (인센푸)</h5>
+      <ul>
+        <li>초역세권 + 대안학군 조합 최고</li>
+        <li>59평 상승이 가파름</li>
+        <li>84는 평촌 학원가 수요로 이동</li>
+        <li>"59 대장은 삼성이다"</li>
+      </ul>
+    </div>
+    <div class="bsg-card pos">
+      <h5>👍 인덕원동아에코빌</h5>
+      <ul>
+        <li>자금 부족 시 가성비 최선</li>
+        <li>지하주차장 연결, 구조 괜찮음</li>
+        <li>8.7억 추천의견 다수</li>
+        <li>"자금 부족 분들에게 괜찮은 단지"</li>
+      </ul>
+    </div>
+    <div class="bsg-card pos">
+      <h5>👍 래미안더포인트</h5>
+      <ul>
+        <li>8.6억 가격대 추천 많음</li>
+        <li>베르텍스 상권 개선으로 살기 좋아짐</li>
+        <li>인센푸 자금 부족 시 차선책</li>
+        <li>"10억이면 더포인트84"</li>
+      </ul>
+    </div>
+    <div class="bsg-card neu">
+      <h5>🤔 인센자</h5>
+      <ul>
+        <li>내손동 최고 단지 평가</li>
+        <li>농수산역 역세권 (인동선 개통 시)</li>
+        <li>"실거주 밸런스 맞추려면 인센자"</li>
+        <li>가격이 인센푸와 비슷해지는 추세</li>
+      </ul>
+    </div>
+    <div class="bsg-card neu">
+      <h5>🤔 에버하임·두산위브</h5>
+      <ul>
+        <li>상품성 좋음 (에버하임)</li>
+        <li>84 가성비 괜찮음 (두산위브)</li>
+        <li>역까지 버스 필요</li>
+        <li>"단지 관리 잘 됨"</li>
+      </ul>
+    </div>
+    <div class="bsg-card neg">
+      <h5>⚠️ 이편한더퍼스트</h5>
+      <ul>
+        <li>단지 넓게 퍼져 시세상승 어려움</li>
+        <li>1·5차 위치 애매, 4차만 인동선 근접</li>
+        <li>"인자뷰 퍼스비엘 전까지 가장 신축"</li>
+        <li>5차는 창밖 뷰 확인 필수</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <div class="sec-title" style="font-size:15px;">📋 스레드별 요약</div>
+
+  <!-- 스레드 1 -->
+  <div class="blind-thread">
+    <div class="blind-thread-header" onclick="toggleBlind(this)">
+      <div>
+        <h4>신혼인데 서울 안 가고 인덕원 산 이유 딱 정리해봄</h4>
+        <div class="bth-meta">삼정KPMG · 좋아요 14 · 댓글 87 · 7일 전</div>
+        <div class="sentiment-row">
+          <span class="sentiment-tag st-pos">인덕원 긍정</span>
+          <span class="sentiment-tag st-neu">서울 vs 인덕원 비교</span>
+        </div>
+      </div>
+      <div class="bth-arrow">▼</div>
+    </div>
+    <div class="blind-thread-body">
+      <div class="blind-comment">
+        <div class="bc-who">✍️ 작성자 요약</div>
+        <div class="bc-text"><b>강점</b>: 교통(인동선·월판선·GTX-C), 인텐스퀘어 복합환승센터 상권 기대, 대안중/대안여중 학군, 과천정보타운 일자리<br><b>한계</b>: 유흥시설 단점, 용적률 300%+ 재건축 어려움<br><b>결론</b>: 비슷한 가격대 서울 구축 대비 상승 여력 높아 보임. 인덕원삼성 매수.</div>
+      </div>
+      <div class="blind-comment">
+        <div class="bc-who">🗨️ 주요 댓글</div>
+        <div class="bc-text">
+          · "인삼/삼호/인센푸 중 샀으면 맞말임" — 익명<br>
+          · "인덕원삼성은 이미 초역세권이고 앞으로 상승가치가 크지" — ex-공무원<br>
+          · "나도 위과선 빨리 결정 나라.." — 삼정KPMG 동료<br>
+          · "인덕원 위치가 사기라서 언젠간 빛봄, 동남권(삼성역8분) 서남권(여의도30분대) 교통입지 끝장" — 한국교통안전공단<br>
+          · "동편마을 살기 너무 좋아 쾌적하고 리조트에서 지내는 기분" — 거주민
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 스레드 2 -->
+  <div class="blind-thread">
+    <div class="blind-thread-header" onclick="toggleBlind(this)">
+      <div>
+        <h4>영끌 9억 인덕원·평촌 등 추천좀요</h4>
+        <div class="bth-meta">삼성SDS · 댓글 35 · 7일 전 · 현금 4억+대출 5억 신혼부부</div>
+        <div class="sentiment-row">
+          <span class="sentiment-tag st-pos">에버하임/더퍼스트 추천</span>
+          <span class="sentiment-tag st-neu">더포인트·인센푸 경합</span>
+        </div>
+      </div>
+      <div class="bth-arrow">▼</div>
+    </div>
+    <div class="blind-thread-body">
+      <div class="blind-comment">
+        <div class="bc-who">✍️ 질문 상황</div>
+        <div class="bc-text">판교(남편)·서초(아내) 자차출퇴근 신혼부부. 현금 4억+대출 5억=9억 예산. 인덕원 평촌 임장 중.</div>
+      </div>
+      <div class="blind-comment">
+        <div class="bc-who">🗨️ 댓글 추천 순위</div>
+        <div class="bc-text">
+          · "주차 감안하면 <b>에버하임/더퍼스트 2·5단지 59</b> 좋음. 지하주차장 연결." — 카카오엔터<br>
+          · "<b>상품성은 더퍼스트/에버하임, 위치는 대림2차/더포인트, 그 사이는 두산위브</b>" — 삼성전자<br>
+          · "인센푸59 더포인트84 추천" (인센푸는 이미 10억 초과) — 현대자동차<br>
+          · "<b>대림2차</b> 구조 잘 빠짐, 20평대 오히려 더 잘 올라" — 익명<br>
+          · "에버하임이나 더퍼스트 위치가 애매함, 지하철 타면 인센푸59 더포인트84가 더 좋을듯" — 현대자동차
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 스레드 3 -->
+  <div class="blind-thread">
+    <div class="blind-thread-header" onclick="toggleBlind(this)">
+      <div>
+        <h4>인덕원 팩트 위주로 질문받는다</h4>
+        <div class="bth-meta">삼성전자 · 조회 1,405 · 댓글 74 · 2026년 4월 11일</div>
+        <div class="sentiment-row">
+          <span class="sentiment-tag st-pos">인덕원 강력 긍정</span>
+          <span class="sentiment-tag st-pos">단지별 포지션 정리</span>
+        </div>
+      </div>
+      <div class="bth-arrow">▼</div>
+    </div>
+    <div class="blind-thread-body">
+      <div class="blind-comment">
+        <div class="bc-who">🗨️ 작성자(삼성전자 거주민) 핵심 답변</div>
+        <div class="bc-text">
+          · 8.7억이면: <b>동아에코빌</b> or <b>더포인트84</b><br>
+          · 실거주 밸런스: <b>인센자</b><br>
+          · 돈+학군: <b>인삼/인센푸</b><br>
+          · 위과선 로또 기대: <b>퍼스비엘 소형</b><br>
+          · 10억 기준: <b>대림2차, 인센푸2차, 더포인트</b><br>
+          · 인센자: "실거주로 좋지"<br>
+          · 삼성래미안 7.8억: "그 가격이면 나쁘지 않지"<br>
+          · 인센푸2단지 84: "1단지 59와 연동됨"
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 스레드 4 -->
+  <div class="blind-thread">
+    <div class="blind-thread-header" onclick="toggleBlind(this)">
+      <div>
+        <h4>인덕원 떡상할까? 어떻게 생각해?</h4>
+        <div class="bth-meta">펨트론 · 조회 2,137 · 댓글 53 · 2026년 4월 10일</div>
+        <div class="sentiment-row">
+          <span class="sentiment-tag st-neu">좋아질거야 O</span>
+          <span class="sentiment-tag st-neg">떡상은 X</span>
+        </div>
+      </div>
+      <div class="bth-arrow">▼</div>
+    </div>
+    <div class="blind-thread-body">
+      <div class="blind-comment">
+        <div class="bc-who">🗨️ 주요 의견</div>
+        <div class="bc-text">
+          · "떡상 할까 (X) <b>떡상 ING (O)</b> 아직도 미실현 호재가 그~득한 지역" — 삼성전자 거주민<br>
+          · "GTX 정차역인 인덕원역 도보권 한정. 한 역 건너 환승 어쩌고는 제외" — 익명<br>
+          · "유흥가는 교통 좋아져서 땅값 오르면 수지타산 안 맞아서 자연스레 없어짐" — ex-카카오<br>
+          · "월판/GTX-C/복합환승센터 준공 후 1-2년까지는 미반영분 조금씩 추가 반영. 위과선 연장은 불확실성 높음" — ex-딜로이트안진<br>
+          · "교통 좋으면 어떻게든 떡상됨" — 한국가스공사<br>
+          · "좋아질거야 O / 떡상할거야 X" — BC카드
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 스레드 5 -->
+  <div class="blind-thread">
+    <div class="blind-thread-header" onclick="toggleBlind(this)">
+      <div>
+        <h4>오랜만에 인덕원·평촌 단속 — 단지별 상세 분석</h4>
+        <div class="bth-meta">COUPANG (평촌 갭투 경험자) · 좋아요 75 · 댓글 141 · 2026년 4월 6일</div>
+        <div class="sentiment-tag st-pos" style="display:inline-block;margin-top:6px;">가장 상세한 단지 분석</div>
+      </div>
+      <div class="bth-arrow">▼</div>
+    </div>
+    <div class="blind-thread-body">
+      <div class="blind-comment">
+        <div class="bc-who">🏙️ 인덕원 전반</div>
+        <div class="bc-text">"인덕원은 거의 모든 업무지구를 10~40분내 커버할 수 있는 유일 지역. 강남까지 물리적 거리는 동대문·청량리와 비슷하며 철산보다 가까움."</div>
+      </div>
+      <div class="blind-comment">
+        <div class="bc-who">🏢 단지별 평가</div>
+        <div class="bc-text">
+          · <b>인삼(인센푸)</b>: 59 대장. 역 700m (누구는 멀고 누구는 갈만). 대안학군, 실거주 만족도 높음<br>
+          · <b>더포인트</b>: 인센푸 자금 모자르면 차선. 베르텍스 상권 개선으로 살기 좋아짐. 역까지 버스 필요<br>
+          · <b>동아에코빌</b>: "자금 부족 분들에게 괜찮은 단지. 지하주차장 연결. 삼성래미안과 잘 비교해서 사시길"<br>
+          · <b>두산위브1·2</b>: 84 가성비 좋음. 탁트인 동 선택 중요 (107동 추천). 벨포레 상권 이용 가능<br>
+          · <b>에버하임</b>: "단지내는 신축 느낌. 수리하면 신축. 59 판상형 구조 괜찮으나 타워형 아쉬움. 가격대비 가성비 매우 좋다"<br>
+          · <b>인센자</b>: "<b>내손동에서 가장 좋은 단지</b>. 농수산역 역세권. 내부 자재 좋음(반포자이 시기 시공). 작년 대비 가격이 인센푸와 같아지는 추세"<br>
+          · <b>이편한</b>: "넓게 퍼져있어 시세상승 어려움. 4차 앞동만 인동선 근접. 5차 창밖 뷰 확인 필수"<br>
+          · <b>삼성래미안</b>: "가성비 단지. 안양역 삼성래미안과 가격 비슷하게 흘러감"
+        </div>
+      </div>
+      <div class="blind-comment">
+        <div class="bc-who">📌 댓글 반응</div>
+        <div class="bc-text">
+          · "내손동은 인덕원 아님. 최대 포일동 역 1km 내외(엘센/인센푸/동아에코빌)까지 인덕원이라 부를만함" — 삼성전자<br>
+          · "대림2차는 예전 인센푸·인삼보다 비싼 아파트였음. 역까지 거리 때문에 지금 그가격" — 삼성전자<br>
+          · "래미안더포인트 추천" (3.5억+대출 6억 예산 질문에) — 현대자동차
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="note">블라인드는 직장인 익명 커뮤니티로, 의견은 개인 경험과 주관이 반영됩니다. 커뮤니티 의견은 참고용이며 실제 매수 결정 전 반드시 직접 임장과 전문가 상담을 병행하세요.</div>
 </section>
 
 <!-- ═══════════════ JS ═══════════════ -->
@@ -1102,7 +1367,7 @@ const complexes = [
     pros: ['포일동 인덕원역 접근성', '2001년식 구축', '학군 양호 (벌말초·대안중·인덕원고)', '가격 안정적'],
     cons: ['세대수 적음 (408세대)', '23년 연식', '신축감 부족'],
     verdict: '8억 후반~9억 초반이면 검토 가능. 학군과 교통이 장점. 9.5억 이상은 가성비 의문.',
-    traffic: '인덕원역 도보 17분. GTX-C, 인동선 직접 수혜. 위례과천선 미확정 호재 기대.',
+    traffic: '인덕원역 도보 17분. GTX-C, 인동선 직접 수혜. 위례과천선 하반기 제3자공고 예정 (경기도 철도기본계획 기반영).',
     note: 'KB 기준 28평 일반가 9.0억, 실거래 9.0억, 매물평균 9.5억 (2026.04)'
   }
 ];
@@ -1150,6 +1415,13 @@ function toggleDetail(btn) {
   const detail = btn.nextElementSibling;
   detail.classList.toggle('open');
   btn.textContent = detail.classList.contains('open') ? '▲ 접기' : '▼ KB시세·교통 상세 보기';
+}
+
+function toggleBlind(header) {
+  const body = header.nextElementSibling;
+  const arrow = header.querySelector('.bth-arrow');
+  body.classList.toggle('open');
+  arrow.textContent = body.classList.contains('open') ? '▲' : '▼';
 }
 
 renderComplexes();
@@ -1340,58 +1612,115 @@ function applyFilters() {
 loadListings();
 
 function loadRecommended() {
-  const recommendedData = [
+  const top3ByComplex = [
     {
-      complex: '동아에코빌',
-      price: '7.9억',
-      layout: '81/60m²',
-      size: '60',
-      floor: '18/22',
-      direction: '남동',
-      dong: '102동',
-      desc: '기본 상태, 확트인 전망, 뷰 짱, 입주협의 가능. 신혼부부 강추.',
-      date: '26.04.26'
+      complex: '동아에코빌', rank: 1,
+      items: [
+        { rank: 1, price: '7.9억', layout: '60m² (24평)', floor: '18/22층', direction: '남동향', dong: '102동',
+          desc: '확트인 전망, 뷰 짱, 입주협의 가능. 신혼부부 강추.', date: '26.04.26',
+          tags: ['로얄층', '남동향', '확트인뷰', '가성비최상'] },
+        { rank: 2, price: '8.5억', layout: '84m² (32평)', floor: '18/23층', direction: '남서향', dong: '103동',
+          desc: '학의천변 수리됨, 채광 좋은 집, 지하주차장 엘베연결.', date: '26.04.20',
+          tags: ['로얄층', '남서향', '학의천뷰', '지하주차연결'] },
+        { rank: 3, price: '8.7억', layout: '84m² (32평)', floor: '8/23층', direction: '남동향', dong: '105동',
+          desc: '입주물, 전체 샷시포함 올수리, 깨끗, 주인거주.', date: '26.04.27',
+          tags: ['올수리', '남동향', '즉시입주'] }
+      ]
     },
     {
-      complex: '동아에코빌',
-      price: '8.7억',
-      layout: '108A/84m²',
-      size: '84',
-      floor: '8/23',
-      direction: '남동',
-      dong: '105동',
-      desc: '입주물, 전체 샷시포함 올수리, 깨끗, 주인거주.',
-      date: '26.04.27'
+      complex: '삼성래미안', rank: 1,
+      items: [
+        { rank: 1, price: '7.7억', layout: '84m² (32평)', floor: '고층', direction: '남향', dong: '',
+          desc: '래미안 브랜드, 남향 고층. 방어형 실거주 최적.', date: '최근',
+          tags: ['고층', '남향', '래미안브랜드', '방어형'] },
+        { rank: 2, price: '8.0억', layout: '84m² (32평)', floor: '중층', direction: '남동향', dong: '',
+          desc: '래미안 중층 남동향. 구축이나 안정적 환금성.', date: '최근',
+          tags: ['중층', '남동향', '환금성'] },
+        { rank: 3, price: '8.3억', layout: '84m² (32평)', floor: '중층', direction: '남향', dong: '',
+          desc: '부분수리, 전망 양호. 실매물 확인 필수.', date: '최근',
+          tags: ['중층', '남향', '부분수리'] }
+      ]
     },
     {
-      complex: '삼성래미안',
-      price: '7.7억',
-      layout: '108A/84m²',
-      size: '84',
-      floor: '고층',
-      direction: '남',
-      dong: '',
-      desc: '래미안 브랜드, 안정적.',
-      date: '최근'
+      complex: '래미안더포인트', rank: 2,
+      items: [
+        { rank: 1, price: '8.6억', layout: '84m² (32평)', floor: '고층', direction: '남향', dong: '',
+          desc: '인덕원역 호재 직접수혜, 평촌 생활권. 최적 매수 포인트.', date: '최근',
+          tags: ['고층', '남향', '호재수혜', '밸런스'] },
+        { rank: 2, price: '8.7억', layout: '84m² (32평)', floor: '중층', direction: '남동향', dong: '',
+          desc: '베르텍스 상권 인접, 실거주 편의 좋음.', date: '최근',
+          tags: ['중층', '남동향', '상권인접'] },
+        { rank: 3, price: '8.8억', layout: '84m² (32평)', floor: '중층', direction: '남향', dong: '',
+          desc: '평촌동 구축 중 안정적. 9억 이하 협상 포인트.', date: '최근',
+          tags: ['중층', '남향', '협상가능'] }
+      ]
+    },
+    {
+      complex: '두산위브 2단지', rank: 2,
+      items: [
+        { rank: 1, price: '8.6억', layout: '84m² (32평)', floor: '고층', direction: '남향', dong: '',
+          desc: '2009년식 상대적 신축. 실거주 만족도 높음.', date: '최근',
+          tags: ['고층', '남향', '2009년식', '가성비'] },
+        { rank: 2, price: '8.8억', layout: '84m² (32평)', floor: '중층', direction: '남동향', dong: '',
+          desc: '포일동 조용한 주거환경. 롯데마트 접근.', date: '최근',
+          tags: ['중층', '남동향', '조용한주거'] },
+        { rank: 3, price: '9.0억', layout: '84m² (32평)', floor: '중층', direction: '남향', dong: '',
+          desc: '1단지 대비 가격 접근성 우위. 실매물 확인 필수.', date: '최근',
+          tags: ['중층', '남향'] }
+      ]
     }
   ];
 
   const container = document.getElementById('recommendedListings');
   container.innerHTML = '';
 
-  recommendedData.forEach(listing => {
-    const card = document.createElement('div');
-    card.className = 'listing-card recommended';
-    card.innerHTML = `
-      <div class="listing-header">
-        <div class="listing-title">${listing.complex} ${listing.dong ? listing.dong + ' · ' : ''}${listing.price}</div>
-        <div class="listing-price">${listing.price}</div>
+  // 기준 설명 박스
+  const criteriaDiv = document.createElement('div');
+  criteriaDiv.className = 'criteria-box';
+  criteriaDiv.innerHTML = `
+    <h4>📋 추천매물 선정 기준</h4>
+    <div class="criteria-tags">
+      <span class="ctag">✅ 로얄층 (10층 이상 또는 전체층 상위 30%)</span>
+      <span class="ctag">✅ 남향·남동향·남서향 (환금성 높은 방향)</span>
+      <span class="ctag">✅ 올수리·부분수리 또는 깨끗한 상태</span>
+      <span class="ctag">✅ 동일 면적 내 가성비 우선</span>
+      <span class="ctag bad">❌ 저층 (5층 이하) 제외</span>
+      <span class="ctag bad">❌ 북향·북동향·북서향 제외</span>
+      <span class="ctag bad">❌ 층수 미표기 저층 의심 제외</span>
+    </div>
+  `;
+  container.appendChild(criteriaDiv);
+
+  const rankClass = ['rank1','rank2','rank3'];
+  const badgeClass = ['b1','b2','b3'];
+  const rankEmoji = ['🥇','🥈','🥉'];
+
+  top3ByComplex.forEach(group => {
+    const section = document.createElement('div');
+    section.className = 'complex-top3';
+    const rankColors = ['','#27ae60','#2980b9','#e67e22','#e74c3c'];
+    section.innerHTML = `
+      <div class="top3-header" style="background:${rankColors[group.rank]}">
+        <h4>${group.complex}</h4>
+        <span class="top3-rank">${group.rank}순위</span>
       </div>
-      <div class="listing-details">${listing.layout} · ${listing.floor}층 · ${listing.direction}향${listing.floor.includes('/') ? ' · 로얄층' : ''}</div>
-      <div class="listing-desc">${listing.desc}</div>
-      <div class="listing-meta">📅 ${listing.date}</div>
+      <div class="top3-grid">
+        ${group.items.map((item, i) => `
+          <div class="top3-card ${rankClass[i]}">
+            <div class="top3-badge ${badgeClass[i]}">${i+1}</div>
+            <div class="t3-title">${group.complex} ${item.dong ? item.dong + ' · ' : ''}${rankEmoji[i]}</div>
+            <div class="t3-price">${item.price}</div>
+            <div class="t3-meta">${item.layout} · ${item.floor} · ${item.direction}</div>
+            <div class="t3-desc">${item.desc}</div>
+            <div class="t3-tags">
+              ${item.tags.map(t => `<span class="t3-tag ${t.includes('제외')||t.startsWith('❌')?'warn':'good'}">${t}</span>`).join('')}
+            </div>
+            <div style="font-size:11px;color:var(--muted);margin-top:6px;">📅 ${item.date} 확인매물</div>
+          </div>
+        `).join('')}
+      </div>
     `;
-    container.appendChild(card);
+    container.appendChild(section);
   });
 }
 
