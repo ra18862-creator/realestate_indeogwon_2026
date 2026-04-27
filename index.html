@@ -90,12 +90,13 @@
   tr:hover td { background: #eef2fa; }
   .highlight-row td { background: #fff8e1 !important; font-weight: 700; color: #b7600e; }
 
-  /* ── 매물 필터 ── */
   .filters { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; align-items: center; }
   .filter-group { display: flex; align-items: center; gap: 8px; }
   .filter-group label { font-size: 13px; font-weight: 600; color: var(--navy); }
   .filter-group select, .filter-group input { padding: 6px 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 13px; }
   .filter-group input { width: 80px; }
+  .sort-group { display: flex; align-items: center; gap: 8px; }
+  .sort-group label { font-size: 13px; font-weight: 600; color: var(--navy); }
 
   /* ── 매물 리스트 ── */
   .listings-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 16px; }
@@ -564,6 +565,12 @@
       <input type="number" id="maxSize" placeholder="최대">
     </div>
     <div class="filter-group">
+      <label>층수:</label>
+      <input type="number" id="minFloor" placeholder="최소">
+      <span>~</span>
+      <input type="number" id="maxFloor" placeholder="최대">
+    </div>
+    <div class="filter-group">
       <label>방향:</label>
       <select id="directionFilter">
         <option value="">전체</option>
@@ -575,6 +582,18 @@
         <option value="남서">남서향</option>
         <option value="북동">북동향</option>
         <option value="북서">북서향</option>
+      </select>
+    </div>
+    <div class="sort-group">
+      <label>정렬:</label>
+      <select id="sortBy">
+        <option value="price">가격</option>
+        <option value="size">면적</option>
+        <option value="floor">층수</option>
+      </select>
+      <select id="sortOrder">
+        <option value="asc">오름차순</option>
+        <option value="desc">내림차순</option>
       </select>
     </div>
     <button onclick="applyFilters()" style="padding: 8px 16px; background: var(--navy); color: white; border: none; border-radius: 6px; cursor: pointer;">필터 적용</button>
@@ -1115,7 +1134,11 @@ function applyFilters() {
   const maxPrice = parseFloat(document.getElementById('maxPrice').value) || Infinity;
   const minSize = parseFloat(document.getElementById('minSize').value) || 0;
   const maxSize = parseFloat(document.getElementById('maxSize').value) || Infinity;
+  const minFloor = parseInt(document.getElementById('minFloor').value) || 0;
+  const maxFloor = parseInt(document.getElementById('maxFloor').value) || Infinity;
   const directionFilter = document.getElementById('directionFilter').value;
+  const sortBy = document.getElementById('sortBy').value;
+  const sortOrder = document.getElementById('sortOrder').value;
 
   const container = document.getElementById('listingsContainer');
   container.innerHTML = '';
@@ -1126,12 +1149,30 @@ function applyFilters() {
     listingsData[complex].forEach(listing => {
       const priceNum = parseFloat(listing.price?.replace('억', '').replace(',', '')) || 0;
       const sizeNum = parseFloat(listing.size) || 0;
+      const floorNum = parseInt(listing.floor?.split('/')[0]) || 0;
       if (priceNum >= minPrice && priceNum <= maxPrice &&
           sizeNum >= minSize && sizeNum <= maxSize &&
+          floorNum >= minFloor && floorNum <= maxFloor &&
           (!directionFilter || listing.direction === directionFilter)) {
         allListings.push({ complex, ...listing });
       }
     });
+  });
+
+  // Sort
+  allListings.sort((a, b) => {
+    let aVal, bVal;
+    if (sortBy === 'price') {
+      aVal = parseFloat(a.price?.replace('억', '').replace(',', '')) || 0;
+      bVal = parseFloat(b.price?.replace('억', '').replace(',', '')) || 0;
+    } else if (sortBy === 'size') {
+      aVal = parseFloat(a.size) || 0;
+      bVal = parseFloat(b.size) || 0;
+    } else if (sortBy === 'floor') {
+      aVal = parseInt(a.floor?.split('/')[0]) || 0;
+      bVal = parseInt(b.floor?.split('/')[0]) || 0;
+    }
+    return sortOrder === 'asc' ? aVal - bVal : bVal - aVal;
   });
 
   allListings.forEach(listing => {
@@ -1143,7 +1184,7 @@ function applyFilters() {
         <div class="listing-price">${listing.price || '가격 미정'}</div>
       </div>
       <div class="listing-details">
-        ${listing.layout || ''} ${listing.floor ? `(${listing.floor})` : ''} ${listing.direction ? `${listing.direction}향` : ''}
+        ${listing.dong ? listing.dong + ' | ' : ''}${listing.layout || ''} ${listing.floor ? `(${listing.floor})` : ''} ${listing.direction ? `${listing.direction}향` : ''}
       </div>
       <div class="listing-desc">${listing.desc || '설명 없음'}</div>
       <div class="listing-meta">확인일: ${listing.date || '미정'}</div>

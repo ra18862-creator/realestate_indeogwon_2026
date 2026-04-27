@@ -15,9 +15,11 @@ for b in blocks:
     m = re.match(r'집주인(.+?)\s*(\d{1,3}동)?$', header)
     if m:
         name = m.group(1).strip()
+        dong = m.group(2)
     else:
         tokens = header.replace('집주인','').strip().split()
         name = tokens[0] if tokens else 'UNKNOWN'
+        dong = None
     price = None
     layout = None
     date = None
@@ -58,6 +60,7 @@ for b in blocks:
         'direction': direction,
         'date': date,
         'desc': desc,
+        'dong': dong,
         'lines': lines
     })
 
