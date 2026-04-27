@@ -587,12 +587,12 @@
     <div class="sort-group">
       <label>정렬:</label>
       <select id="sortBy">
-        <option value="price">가격</option>
+        <option value="price" selected>가격</option>
         <option value="size">면적</option>
         <option value="floor">층수</option>
       </select>
       <select id="sortOrder">
-        <option value="asc">오름차순</option>
+        <option value="asc" selected>오름차순</option>
         <option value="desc">내림차순</option>
       </select>
     </div>
@@ -1180,11 +1180,11 @@ function applyFilters() {
     card.className = 'listing-card';
     card.innerHTML = `
       <div class="listing-header">
-        <div class="listing-title">${listing.complex}</div>
+        <div class="listing-title">${listing.complex} ${listing.dong || ''}</div>
         <div class="listing-price">${listing.price || '가격 미정'}</div>
       </div>
       <div class="listing-details">
-        ${listing.dong ? listing.dong + ' | ' : ''}${listing.layout || ''} ${listing.floor ? `(${listing.floor})` : ''} ${listing.direction ? `${listing.direction}향` : ''}
+        ${listing.layout || ''} ${listing.size ? `(${listing.size}m² / ${Math.round(parseFloat(listing.size) / 3.305785)}평)` : ''} ${listing.floor ? `(${listing.floor})` : ''} ${listing.direction ? `${listing.direction}향` : ''}
       </div>
       <div class="listing-desc">${listing.desc || '설명 없음'}</div>
       <div class="listing-meta">확인일: ${listing.date || '미정'}</div>
