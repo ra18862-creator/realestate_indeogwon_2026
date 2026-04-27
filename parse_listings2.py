@@ -6,7 +6,7 @@ import json
 text = Path('매물목록.txt').read_text(encoding='utf-8')
 blocks = [b.strip() for b in re.split(r'(?=집주인)', text) if b.strip()]
 print('blocks', len(blocks))
-complex_data = defaultdict(list)
+complex_data = defaultdict(lambda: defaultdict(list))
 for b in blocks:
     lines = [line.strip() for line in b.splitlines() if line.strip()]
     if not lines:
@@ -52,20 +52,40 @@ for b in blocks:
                 date = dm.group(1)
         if desc is None and not any(keyword in line for keyword in ['매매', '아파트', '확인매물', '제공', '공인중개사']):
             desc = line
-    complex_data[name].append({
-        'price': price,
+    key = f"{dong or 'N'}_{floor or 'N'}_{price or 'N'}"
+    complex_data[name][key].append({
         'layout': layout,
         'size': size,
-        'floor': floor,
         'direction': direction,
         'date': date,
         'desc': desc,
-        'dong': dong,
         'lines': lines
     })
 
+# Merge duplicates
+merged_data = defaultdict(list)
+for name, groups in complex_data.items():
+    for key, items in groups.items():
+        dong, floor, price = key.split('_', 2)
+        dong = dong if dong != 'N' else None
+        floor = floor if floor != 'N' else None
+        price = price if price != 'N' else None
+        descs = [d['desc'] for d in items if d['desc']]
+        dates = [d['date'] for d in items if d['date']]
+        merged_data[name].append({
+            'price': price,
+            'layout': items[0]['layout'],
+            'size': items[0]['size'],
+            'floor': floor,
+            'direction': items[0]['direction'],
+            'dong': dong,
+            'date': max(dates) if dates else None,
+            'desc': ' | '.join(descs) if descs else None,
+            'lines': [line for item in items for line in item['lines']]
+        })
+
 # Save to JSON
 with open('listings.json', 'w', encoding='utf-8') as f:
-    json.dump(dict(complex_data), f, ensure_ascii=False, indent=2)
+    json.dump(dict(merged_data), f, ensure_ascii=False, indent=2)
 
 print("Data saved to listings.json")
