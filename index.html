@@ -226,7 +226,7 @@
   <div class="subtitle">안양·의왕 인덕원 생활권 단지 분석 · 2026년 4월 기준</div>
   <div class="meta-pills">
     <span class="pill">현금 <b>4.8억</b></span>
-    <span class="pill">금리 <b>4.3%</b></span>
+    <span class="pill">금리 <b id="headerRate">4.3%</b></span>
     <span class="pill">상환 <b>30년 원리금균등</b></span>
     <span class="pill">대출 1억당 <b>월 49.5만원</b></span>
     <span class="pill">취득세·중개비·수리비 <b>별도</b></span>
@@ -318,10 +318,16 @@
     <div class="calc-row">
       <label>매수가</label>
       <div class="range-wrap">
-        <input type="range" id="priceSlider" min="70" max="130" value="86" step="1"
-          oninput="updateCalc()">
+        <input type="range" id="priceSlider" min="70" max="130" value="86" step="1" oninput="updateCalc()">
       </div>
       <span id="priceDisplay" style="font-size:20px;font-weight:800;color:var(--navy);min-width:70px;">8.6억</span>
+    </div>
+    <div class="calc-row">
+      <label>금리</label>
+      <div class="range-wrap">
+        <input type="range" id="rateSlider" min="2.0" max="6.0" value="4.3" step="0.1" oninput="updateCalc()">
+      </div>
+      <span id="rateDisplay" style="font-size:20px;font-weight:800;color:var(--navy);min-width:70px;">4.3%</span>
     </div>
     <div class="calc-result">
       <div class="calc-item">
@@ -635,7 +641,8 @@ function showTab(id, btn) {
 // ── 월상환 계산기 ──
 function calcMonthly(price) {
   const loan = Math.max(0, price - 4.8);
-  const r = 0.043 / 12;
+  const rate = parseFloat(document.getElementById('rateSlider').value);
+  const r = rate / 100 / 12;
   const n = 360;
   if (loan <= 0) return 0;
   return loan * 1e8 * r * Math.pow(1+r,n) / (Math.pow(1+r,n)-1);
@@ -644,6 +651,7 @@ function calcMonthly(price) {
 function updateCalc() {
   const val = parseInt(document.getElementById('priceSlider').value);
   const price = val / 10;
+  const rate = parseFloat(document.getElementById('rateSlider').value);
   const loan = Math.max(0, price - 4.8);
   const monthly = calcMonthly(price);
   const monthlyMon = monthly / 10000;
@@ -651,6 +659,8 @@ function updateCalc() {
   const dti = (monthly * 12) / (1000 * 10000) * 100;
 
   document.getElementById('priceDisplay').textContent = price.toFixed(1) + '억';
+  document.getElementById('rateDisplay').textContent = rate.toFixed(1) + '%';
+  document.getElementById('headerRate').textContent = rate.toFixed(1) + '%';
   document.getElementById('loanAmount').textContent = loan.toFixed(1) + '억';
   document.getElementById('monthlyPay').textContent = Math.round(monthlyMon) + '만';
   document.getElementById('yearlyPay').textContent = Math.round(yearlyMon).toLocaleString() + '만';
