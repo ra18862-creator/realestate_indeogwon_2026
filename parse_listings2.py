@@ -27,7 +27,7 @@ for b in blocks:
     desc = None
     for line in lines[1:]:
         if price is None:
-            pm = re.search(r'매매\s*([0-9억,]+)', line)
+            pm = re.search(r'매매\s*([0-9억,\s]+)', line)
             if pm:
                 price = pm.group(1)
         if layout is None:
