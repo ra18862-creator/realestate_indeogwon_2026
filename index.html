@@ -102,6 +102,7 @@
   .listings-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 16px; }
   .listing-card { background: var(--card); border-radius: 12px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); transition: transform 0.2s; }
   .listing-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.12); }
+  .listing-card.recommended { border: 3px solid var(--gold); background: linear-gradient(135deg, #fff8e1, var(--card)); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
   .listing-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
   .listing-title { font-size: 16px; font-weight: 700; color: var(--navy); }
   .listing-price { font-size: 18px; font-weight: 800; color: var(--gold); }
@@ -324,7 +325,7 @@
 
   <div class="card">
     <div class="card-title">🏠 동아에코빌 추천 매물</div>
-    <div class="listing-card">
+    <div class="listing-card recommended">
       <div class="listing-header">
         <div class="listing-title">동아에코빌 102동 · 7.9억</div>
         <div class="listing-price">7.9억</div>
@@ -333,7 +334,7 @@
       <div class="listing-desc">기본 상태, 확트인 전망, 뷰 짱, 입주협의 가능. 신혼부부 강추. 환금성 높음.</div>
       <div class="listing-meta">📅 26.04.26 · 행운공인중개사</div>
     </div>
-    <div class="listing-card">
+    <div class="listing-card recommended">
       <div class="listing-header">
         <div class="listing-title">동아에코빌 105동 · 8.7억</div>
         <div class="listing-price">8.7억</div>
@@ -346,7 +347,7 @@
 
   <div class="card" style="margin-top:16px;">
     <div class="card-title">🏠 삼성래미안 추천 매물</div>
-    <div class="listing-card">
+    <div class="listing-card recommended">
       <div class="listing-header">
         <div class="listing-title">삼성래미안 · 7.7억</div>
         <div class="listing-price">7.7억</div>
